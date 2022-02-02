@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: fbulut <fbulut@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/01/29 16:17:27 by fbulut            #+#    #+#             */
-/*   Updated: 2022/01/31 11:46:04 by fbulut           ###   ########.fr       */
+/*   Created: 2022/01/31 15:07:40 by fbulut            #+#    #+#             */
+/*   Updated: 2022/02/02 18:01:38 by fbulut           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,9 +36,35 @@ size_t	ft_strlen(const char *s)
 	int	i;
 
 	i = 0;
+	if (!s)
+		return (0);
 	while (s[i])
 		i++;
 	return (i);
+}
+
+char	*ft_strjoin(char *s1, char *s2)
+{
+	char	*str;
+	size_t	i;
+	size_t	j;
+	size_t	boyut;
+
+	boyut = (ft_strlen(s1) + ft_strlen(s2) + 1);
+	str = malloc(sizeof(char) * boyut);
+	i = -1;
+	j = -1;
+	if (!str)
+	{
+		return (NULL);
+	}	
+	while (s1 && s1[++i])
+		str[i] = s1[i];
+	while (s2 && s2[++j])
+		str[i++] = s2[j];
+	free(s1);
+	str[i] = '\0';
+	return (str);
 }
 
 char	*ft_strchr(const char *s, int c)
@@ -46,6 +72,8 @@ char	*ft_strchr(const char *s, int c)
 	int	i;
 
 	i = 0;
+	if (!s)
+		return (NULL);
 	while (s[i])
 	{
 		if (s[i] == (char)c)
@@ -79,29 +107,5 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 		i++;
 	}
 	str[x] = '\0';
-	return (str);
-}
-
-char	*ft_strjoin(const char *s1, const char *s2)
-{
-	char	*str;
-	size_t	i;
-	size_t	j;
-	size_t	boyut;
-
-	boyut = (ft_strlen(s1) + ft_strlen(s2) + 1);
-	str = malloc(sizeof(char) * boyut);
-	i = -1;
-	j = -1;
-	if (!str)
-	{
-		return (NULL);
-	}	
-	while (s1 && s1[++i])
-		str[i] = s1[i];
-	while (s2 && s2[++j])
-		str[i++] = s2[j];
-	str[i] = '\0';
-	free((char *)s1);
 	return (str);
 }
