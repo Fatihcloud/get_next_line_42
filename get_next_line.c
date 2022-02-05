@@ -6,99 +6,117 @@
 /*   By: fbulut <fbulut@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/01 15:55:21 by fbulut            #+#    #+#             */
-/*   Updated: 2022/02/02 20:57:51 by fbulut           ###   ########.fr       */
+/*   Updated: 2022/02/05 20:12:03 by fbulut           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
-
 #include <fcntl.h>
 #include <stdio.h>
 
-char	*get_data_line(int fd, char *destek)
+char	*kalan_line(char *str)
 {
-	char	*buffer;
-	int		okunan;
+	char	*y;
 
-	okunan = 1;
-	buffer = malloc(BUFFER_SIZE + 1);
-	if (!buffer)
+	if (!str)
 		return (NULL);
-	while (!ft_strchr(destek, '\n') && okunan > 0)
+	if (!*str)
 	{
-		okunan = read(fd, buffer, BUFFER_SIZE);
-		if (!okunan)
-			break ;
-		buffer[okunan] = '\0';
-		destek = ft_strjoin(destek, buffer);
+		free(str);
+		return (NULL);
 	}
-	free (buffer);
-	return (destek);
+	y = ft_strchr(str, '\n');
+	if (!y)
+	{
+		free(str);
+		return (NULL);
+	}
+	y++;
+	if (!*y)
+	{
+		free(str);
+		return (NULL);
+	}
+	y = ft_strdup(y);
+	free(str);
+	return (y);
 }
 
-char	*kalan_line(char *destek)
+char	*get_line(char *str)
 {
-	char	*ptr;
+	char	*y;
+	char	*line;
+	size_t	size;
 
-	ptr = ft_strchr(ptr, '\n');
-	if (!ptr)
-	{
-		free (ptr);
+	if (!str)
 		return (NULL);
-	}
-	ptr++;
-	if (!*ptr)
-	{
-		free(destek);
+	if (!*str)
 		return (NULL);
-	}
-	ptr = ft_strdup(ptr);
-	free(destek);
-	return (ptr);
+	y = ft_strchr(str, '\n');
+	if (!y)
+		return (ft_strdup(str));
+	y++;
+	if (!*y)
+		return (ft_strdup(str));
+	size = ft_strlen(str) - ft_strlen(y);
+	line = ft_substr(str, 0, size);
+	return (line);
 }
 
-char	*tut_line(char *destek)
+char	*readdata(char *str, int fd)
 {
-	char	*ptr;
-	int		len;
+	char	*bf;
+	char	*temp;
+	int		d;
 
-	if (!destek)
-		return (NULL);
-	if (!*destek)
-		return (NULL);
-	ptr = ft_strchr(destek, '\n');
-	if (!ptr)
-		return (ft_strdup(destek));
-	ptr++;
-	if (!(*ptr))
-		return (ft_strdup(destek));
-	len = ft_strlen(destek) - ft_strlen(ptr);
-	return (ft_substr(destek, 0, len));
+	if (!str)
+	str = ft_strdup("");
+	d = 1;
+	bf = malloc(BUFFER_SIZE + 1);
+	while (d && !ft_strchr(str, '\n'))
+	{
+		d = read(fd, bf, BUFFER_SIZE);
+		if (d < 0)
+		{
+			free (bf);
+			free (str);
+			return (NULL);
+		}
+		bf[d] = 0;
+		temp = ft_strjoin(str, bf);
+		free(str);
+		str = temp;
+	}
+	free(bf);
+	return (str);
 }
 
 char	*get_next_line(int fd)
 {
-	static char	*dizi;
+	static char	*str;
 	char		*line;
 
-	line = NULL;
-	dizi = get_data_line(fd, dizi);
-	if (!dizi)
+	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
-	line = tut_line(line);
-	dizi = kalan_line(dizi);
+	str = readdata(str, fd);
+	line = get_line(str);
+	str = kalan_line(str);
 	return (line);
 }
 
-int   main()
-{
-  int   fd;
-  int	fd2;
-  char *c;
+// int   main()
+// {
+//   int   fd;
+//   char *c;
 
-  fd = open("test.txt", O_RDONLY);
-  c = get_next_line(fd);
-    free(c);
-  // For checking leaks
-  //system("leaks a.out");
-}
+//   fd = open("test.txt", O_RDWR);
+//   c = get_next_line(fd);
+//   while(c)
+//   {
+//     printf("%s",c);
+// 	free(c);
+//     c = get_next_line(fd);
+//   }
+// //   For checking leaks
+//   system("leaks a.out");
+// }

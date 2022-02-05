@@ -6,7 +6,7 @@
 /*   By: fbulut <fbulut@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/31 15:09:40 by fbulut            #+#    #+#             */
-/*   Updated: 2022/02/02 17:59:06 by fbulut           ###   ########.fr       */
+/*   Updated: 2022/02/05 18:59:29 by fbulut           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 # include <unistd.h>
 
 # ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 500
+#  define BUFFER_SIZE 42
 # endif
 
 char	*ft_strjoin(char *s1, char *s2);

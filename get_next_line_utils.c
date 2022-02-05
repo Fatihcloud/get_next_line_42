@@ -6,7 +6,7 @@
 /*   By: fbulut <fbulut@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/31 15:07:40 by fbulut            #+#    #+#             */
-/*   Updated: 2022/02/02 18:01:38 by fbulut           ###   ########.fr       */
+/*   Updated: 2022/02/05 20:03:29 by fbulut           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,6 @@ char	*ft_strjoin(char *s1, char *s2)
 		str[i] = s1[i];
 	while (s2 && s2[++j])
 		str[i++] = s2[j];
-	free(s1);
 	str[i] = '\0';
 	return (str);
 }
